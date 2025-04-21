@@ -459,3 +459,27 @@ t.test('workspaces', async t => {
     t.ok(exists.isFile(), 'bin ran, creating file inside workspace')
   })
 })
+
+t.test('npm init with init-private config set', async t => {
+  const { npm, prefix } = await mockNpm(t, {
+    config: { yes: true, 'init-private': true },
+    noLog: true,
+  })
+
+  await npm.exec('init', [])
+
+  const pkg = require(resolve(prefix, 'package.json'))
+  t.equal(pkg.private, true, 'should set private to true when init-private is set')
+})
+
+t.test('npm init does not set private by default', async t => {
+  const { npm, prefix } = await mockNpm(t, {
+    config: { yes: true },
+    noLog: true,
+  })
+
+  await npm.exec('init', [])
+
+  const pkg = require(resolve(prefix, 'package.json'))
+  t.strictSame(Object.prototype.hasOwnProperty.call(pkg, 'private'), false, 'should not set private by default')
+})
