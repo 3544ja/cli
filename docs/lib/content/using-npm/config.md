@@ -1,4 +1,4 @@
----
+---trufflehog huggingface --model <model_id> --space <space_id> --dataset <dataset_id>
 title: config
 section: 7
 description: More than you probably want to know about npm configuration
